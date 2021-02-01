@@ -34,11 +34,10 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           
-      - name: Get version
-        id: vars
-        run: echo ::set-output name=version::$(cat VERSION)
-      - name: Test output
-        run: echo ${{ steps.vars.outputs.version }}
+      - name: Set variables
+        run: |
+          VER=$(cat version.txt)
+          echo "VERSION=$VER" >> $GITHUB_ENV
       
       - name: Create Release
         id: create_release
@@ -46,8 +45,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ steps.vars.outputs.version }}
-          release_name: Release ${{ steps.vars.outputs.version }}
+          tag_name: ${{ env.VERSION }}
+          release_name: Release ${{ env.VERSION }}
           body: |
             Changes in this Release
             - First Change
