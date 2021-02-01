@@ -36,7 +36,7 @@ jobs:
           
       - name: Set variables
         run: |
-          VER=$(cat VERSION)
+          VER=$(cat version.txt)
           echo "VERSION=$VER" >> $GITHUB_ENV
       
       - name: Create Release
