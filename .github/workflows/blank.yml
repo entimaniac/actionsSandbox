@@ -23,13 +23,10 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      - name: Get Version from pom.xml
-        id: get_version
-        uses: mavrosxristoforos/get-xml-info@1.0
-        with:
-          xml-file: pom.xml
-          xpath: /project/version
+          
+      - name: get-pom-version
+        id: pom-version
+        uses: CptMokoena/maven-get-version-action@master
       
       - name: Create Release
         id: create_release
@@ -37,8 +34,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ steps.get_version.outputs.info }}
-          release_name: Release ${{ steps.get_version.outputs.info }}
+          tag_name: ${{ steps.pom-version.outputs.version }}
+          release_name: Release ${{ steps.pom-version.outputs.version }}
 
           body: |
             Changes in this Release
