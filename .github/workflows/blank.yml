@@ -24,20 +24,12 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-          
-      - name: Set variables
-        run: |
-          VER=$(cat version.txt)
-          echo "VERSION=$VER" >> $GITHUB_ENV
+      - name: Get Version from pom.xml
+        id: version
+        uses: mavrosxristoforos/get-xml-info@1.0
+        with:
+          xml-file: 'pom.xml'
+          xpath: '//version'
       
       - name: Create Release
         id: create_release
@@ -45,11 +37,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ env.VERSION }}
-          release_name: Release ${{ env.VERSION }}
+          tag_name: ${{ steps.version.outputs.info }}
+          release_name: Release ${{ steps.version.outputs.info }}
+
           body: |
             Changes in this Release
             ${{ github.event.head_commit.message }}
           draft: false
           prerelease: false
-
