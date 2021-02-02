@@ -26,7 +26,7 @@ jobs:
           
       - name: get-pom-version
         id: pom-version
-        uses: CptMokoena/maven-get-version-action@master
+        uses: CptMokoena/maven-get-version-action@main
       
       - name: Create Release
         id: create_release
