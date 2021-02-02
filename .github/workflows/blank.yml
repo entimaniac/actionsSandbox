@@ -29,7 +29,7 @@ jobs:
         uses: mavrosxristoforos/get-xml-info@1.0
         with:
           xml-file: pom.xml
-          xpath: /test
+          xpath: /project/version
       
       - name: Create Release
         id: create_release
